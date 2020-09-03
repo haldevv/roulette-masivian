@@ -10,7 +10,7 @@ export class DB {
         });
     }
     saveData(key: string, data: any){
-        this.client.hmset(key, data)
+        return new Promise((resolve) => this.client.hmset(key, data, () => {resolve()}));
     }
     getAllData(key: string): Promise<any>{
         return new Promise((resolve) => {
