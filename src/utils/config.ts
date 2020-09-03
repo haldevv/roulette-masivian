@@ -7,5 +7,7 @@ export const config: AppConfig = {
     host: process.env.APP_HOST || '127.0.0.1',
     limitBodySize: process.env.APP_LIMIT_BODY_SIZE|| '20mb',
     redisHost: process.env.REDIS_HOST || '127.0.0.1',
-    redisPort: process.env.REDIS_PORT || '6397'
+    redisPort: process.env.REDIS_PORT || '6379',
+    redisDatabase: process.env.REDIS_DB || '0',
+    redisConnectionTimeout: process.env.REDIS_CONN_TIMEOUT || '10'
 }

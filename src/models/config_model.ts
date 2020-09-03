@@ -3,5 +3,7 @@ export interface AppConfig {
     host: string,
     limitBodySize: string,
     redisPort: string,
-    redisHost: string
+    redisHost: string,
+    redisDatabase: string,
+    redisConnectionTimeout: string
 }
