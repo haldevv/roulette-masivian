@@ -9,12 +9,12 @@ export class DB {
             db: parseInt(config.redisDatabase)
         });
     }
-    saveData(key: string, data: any){
-        return new Promise((resolve) => this.client.hmset(key, data, () => {resolve()}));
+    saveData(key: string, data: string){
+        return new Promise((resolve) => this.client.set(key, data, (result) => {resolve(result)}));
     }
     getAllData(key: string): Promise<any>{
         return new Promise((resolve) => {
-            this.client.get(key, (result) => {
+            this.client.get(key,(err, result) => {
                 resolve(result)
             })
         })

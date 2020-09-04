@@ -1,5 +1,7 @@
+import { BetModel } from "./bet_model";
+
 export interface RouletteModel {
     status: string
     id: string
-    bets: string
+    bets: Array<BetModel>
 }
