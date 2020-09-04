@@ -12,5 +12,5 @@ export function getRouletteRoutes(app: any){
     app.use('/roulette/bet', validateRouletteId);
     app.post('/roulette/bet', roulleteInstance.makeBet);
     app.post('/roulette/close', roulleteInstance.closeRoulette);
-    app.get('/roulette/all');
+    app.get('/roulette/all', roulleteInstance.getAllRoulettes);
 }

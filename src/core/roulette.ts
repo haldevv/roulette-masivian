@@ -1,7 +1,7 @@
 import { RedisClient } from "redis";
 import { DB } from "../db/redis";
 import { v1 as uuidv1 } from 'uuid';
-import { Request, Response } from "express";
+import { Request, Response, response } from "express";
 import { RouletteModel } from "../models/roulette_model";
 import { BetModel } from "../models/bet_model";
 
@@ -23,7 +23,7 @@ export class Roulette {
     public async openRoulette(request: Request, response: Response) {
         const id = request.body.id;
         const db = new DB();
-        const raw: string = await db.getAllData(id);
+        const raw: string = await db.getDataByKey(id);
         const data: RouletteModel = (raw !== null && typeof raw !== 'undefined') ? JSON.parse(raw) : {status: null};
         if(data.status === 'created'){
             data.status = 'open'
@@ -34,13 +34,16 @@ export class Roulette {
         }
         await db.closeConnection();
     }
-    public async getAllRoulettes(){
-
+    public async getAllRoulettes(request: Request, response: Response){
+        const db = new DB();
+        const result = await db.getAllData();
+        db.closeConnection();
+        response.send({status: 200, message: 'Lista procesada', result});
     }
     public async makeBet(request: Request, response: Response){
         const data = request.body;
         const db = new DB();
-        const raw = await db.getAllData(data.rouletteId);
+        const raw = await db.getDataByKey(data.rouletteId);
         const betData: BetModel = {
             color: data.color,
             number: data.number,
@@ -59,7 +62,7 @@ export class Roulette {
     public async closeRoulette(request: Request, response: Response){
         const rouletteId = request.body.id;
         const db = new DB();
-        const raw = await db.getAllData(rouletteId);
+        const raw = await db.getDataByKey(rouletteId);
         const rouletteData: RouletteModel = (raw !== null && typeof raw !== 'undefined') ? JSON.parse(raw) : {status: null, bets: []};
         if(rouletteData.status === 'open') {
             rouletteData.status = 'close';

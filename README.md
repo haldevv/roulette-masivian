@@ -1,11 +1,18 @@
 # API ENDPOINTS
 
 ## /roulette/create
+METHOD
+
+    Post
 
 ## /roulette/open
 BODY
 
     id -> roulette ID **string**
+
+METHOD
+
+    Post
 
 ## /roulette/bet
 BODY
@@ -18,3 +25,21 @@ BODY
 HEADERS
 
     customer -> customer ID **string**
+
+METHOD
+
+    post
+
+## /roulette/close
+BODY
+
+    id -> roulette ID **string**
+
+METHOD
+
+    Post
+
+## /roulette/all
+METHOD
+    
+    Get

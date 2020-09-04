@@ -12,7 +12,7 @@ export class DB {
     saveData(key: string, data: string){
         return new Promise((resolve) => this.client.set(key, data, (result) => {resolve(result)}));
     }
-    getAllData(key: string): Promise<any>{
+    getDataByKey(key: string): Promise<any>{
         return new Promise((resolve) => {
             this.client.get(key,(err, result) => {
                 resolve(result)
@@ -20,6 +20,23 @@ export class DB {
         })
     }
     closeConnection(): void{
-        this.client.quit()
+        this.client.quit();
+    }
+    getAllData(): Promise<any> {
+        return new Promise((resolve) => {
+            this.client.keys('*', async (err, keys) => {
+                const result = [];
+                if(keys && keys.length > 0) {
+                    for (let i = 0; i < keys.length; i++) {
+                        const key = keys[i];
+                        const roulette = await this.getDataByKey(key);
+                        if(roulette){
+                            result.push(JSON.parse(roulette));
+                        }
+                    }
+                }
+                resolve(result);
+            })
+        })
     }
 }
