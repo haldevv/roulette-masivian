@@ -1,0 +1,23 @@
+FROM node:12.18.3-alpine3.12
+
+ENV APP_PORT 3200
+ENV APP_HOST 127.0.0.1
+ENV APP_LIMIT_BODY_SIZE: 20mb
+ENV REDIS_HOST 127.0.0.1
+ENV REDIS_PORT 6379
+ENV REDIS_DB 0
+ENV REDIS_CONN_TIMEOUT 10
+
+WORKDIR /usr/src/app
+
+COPY package.json .
+
+RUN yarn
+
+ADD . /usr/src/app
+
+RUN yarn build
+
+EXPOSE 3200
+
+CMD [ "node", "build/index.js" ]
