@@ -9,8 +9,11 @@ id -> roulette ID **string**
 ## /roulette/bet
     BODY
 rouletteId -> roulette ID **string**
+---
 color -> color (red or black) **string**
+---
 number -> number **number**
+---
 money -> money to bet **number**
 
     HEADERS

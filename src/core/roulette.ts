@@ -49,11 +49,15 @@ export class Roulette {
                 money: data.money
             }
             const roulletData: RouletteModel = (raw !== null && typeof raw !== 'undefined') ? JSON.parse(raw) : {status: null};
-            roulletData.bets.push(betData);
-            await db.saveData(data.rouletteId, JSON.stringify(roulletData));
-            response.send({status: 200, message: 'Apuesta procesada con exito'});
+            if(roulletData.status === 'open'){
+                roulletData.bets.push(betData);
+                await db.saveData(data.rouletteId, JSON.stringify(roulletData));
+                response.send({status: 200, message: 'Apuesta procesada con exito'});
+            } else {
+                response.send({status: 400, message: 'La ruleta debe estar abierta para poder hacer apuestas'});
+            } 
         }
-    }
+    }   
     public async getRouletteById(){
 
     }
