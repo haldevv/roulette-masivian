@@ -1,3 +1,11 @@
+# INSTALATION
+
+    cd project_dir
+    docker build -t backend:latest .
+    docker run --name backend -d -p 3200:3200 backend:latest
+
+The app requires redis v6
+
 # API ENDPOINTS
 
 ## /roulette/create
