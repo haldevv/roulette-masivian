@@ -3,19 +3,18 @@
 ## /roulette/create
 
 ## /roulette/open
-    BODY
-id -> roulette ID **string**
+BODY
+
+    id -> roulette ID **string**
 
 ## /roulette/bet
-    BODY
-rouletteId -> roulette ID **string**
----
-color -> color (red or black) **string**
----
-number -> number **number**
----
-money -> money to bet **number**
+BODY
 
-    HEADERS
-customer -> customer ID **string**
+    rouletteId -> roulette ID **string**
+    color -> color (red or black) **string**
+    number -> number **number**
+    money -> money to bet **number**
 
+HEADERS
+
+    customer -> customer ID **string**

@@ -41,27 +41,32 @@ export class Roulette {
         const data = request.body;
         const db = new DB();
         const raw = await db.getAllData(data.rouletteId);
-        if(raw) {
-            const betData: BetModel = {
-                color: data.color,
-                number: data.number,
-                customer: request.header('customer') || '',
-                money: data.money
-            }
-            const roulletData: RouletteModel = (raw !== null && typeof raw !== 'undefined') ? JSON.parse(raw) : {status: null};
-            if(roulletData.status === 'open'){
-                roulletData.bets.push(betData);
-                await db.saveData(data.rouletteId, JSON.stringify(roulletData));
-                response.send({status: 200, message: 'Apuesta procesada con exito'});
-            } else {
-                response.send({status: 400, message: 'La ruleta debe estar abierta para poder hacer apuestas'});
-            } 
+        const betData: BetModel = {
+            color: data.color,
+            number: data.number,
+            customer: request.header('customer') || '',
+            money: data.money
         }
+        const rouletteData: RouletteModel = (raw !== null && typeof raw !== 'undefined') ? JSON.parse(raw) : {status: null};
+        if(rouletteData.status === 'open'){
+            rouletteData.bets.push(betData);
+            await db.saveData(data.rouletteId, JSON.stringify(rouletteData));
+            response.send({status: 200, message: 'Apuesta procesada con exito'});
+        } else {
+            response.send({status: 400, message: 'La ruleta debe estar abierta para poder hacer apuestas'});
+        } 
     }   
-    public async getRouletteById(){
-
-    }
-    public async getRouletteBets() {
-
+    public async closeRoulette(request: Request, response: Response){
+        const rouletteId = request.body.id;
+        const db = new DB();
+        const raw = await db.getAllData(rouletteId);
+        const rouletteData: RouletteModel = (raw !== null && typeof raw !== 'undefined') ? JSON.parse(raw) : {status: null, bets: []};
+        if(rouletteData.status === 'open') {
+            rouletteData.status = 'close';
+            await db.saveData(rouletteId, JSON.stringify(rouletteData));
+            response.send({status: 200, message: 'Ruleta procesada', result: rouletteData.bets})
+        } else {
+            response.send({status: 400, message: 'La ruleta debe estar abierta para poder procesarla'});
+        }
     }
 }
